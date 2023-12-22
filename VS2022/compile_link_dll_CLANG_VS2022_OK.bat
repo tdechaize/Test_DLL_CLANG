@@ -49,7 +49,7 @@ set "PAR1=%~1"
 REM Mandatory, add to PATH the binary directory of compiler CLANG 32 bits + VisualC/C++ + Kits Windows. You can adapt this directory at your personal software environment.
 SET PATH=%LLVM%\bin;C:\Program Files (X86)\Windows Kits\%KIT_WIN_VERSION%\bin\%KIT_WIN_NUM%\x86;C:\Program Files\Microsoft Visual Studio\%VS_VERSION%\Community\VC\Tools\MSVC\%VS_NUM%\bin\Hostx86\x86;;C:\GetGnuWin32\bin;%PATH%
 clang --version | grep "clang version"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 REM Options used with CLANG/LLVM compiler 32 bits (very similar with syntax of Visual C/C++ compiler) :
 REM 	/Wall								-> set all warning during compilation
 REM		/c 									-> compile and assemble only, not call of linker
@@ -111,7 +111,7 @@ set "PAR1=%~1"
 REM      Mandatory, add to PATH the binary directory of compiler CLANG 64 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=%LLVM64%\bin;C:\Program Files (X86)\Windows Kits\%KIT_WIN_VERSION%\bin\%KIT_WIN_NUM%\x64;C:\Program Files\Microsoft Visual Studio\%VS_VERSION%\Community\VC\Tools\MSVC\%VS_NUM%\bin\Hostx64\x64;;C:\GetGnuWin32\bin;%PATH
 clang --version | grep "clang version"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of Visual C/C++ compiler) :
 REM 	/Wall								-> set all warning during compilation
 REM		/c 									-> compile and assemble only, not call of linker
@@ -123,7 +123,7 @@ REM Options used with linker CLANG/LLVM 64 bits (very similar with syntax of Vis
 REM		/LD									-> generate a shared library => on Window, generate a DLL (Dynamic Linked Library)
 REM		/MT                     			-> Use static run-time  
 echo.  ***************          Edition de liens de la DLL avec CLANG 64 bits + VisualC/C++ + Kits Windows.     *******************
-clang-cl /LD /MT /Fedll_core64.dll --target x86_64-pc-windows-msvc dll_core64.obj 
+clang-cl /LD /MT /Fedll_core64.dll dll_core64.obj 
 echo.  ***************              Listage des fonctions exportees de la DLL                                   *******************
 REM  	dump result with command "dumpbin" to see exported symbols of dll
 dumpbin /exports  dll_core64.dll

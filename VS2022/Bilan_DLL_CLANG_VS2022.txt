@@ -705,7 +705,7 @@ set "PAR1=%~1"
 REM Mandatory, add to PATH the binary directory of compiler CLANG 32 bits + VisualC/C++ + Kits Windows. You can adapt this directory at your personal software environment.
 SET PATH=%LLVM%\bin;C:\Program Files (X86)\Windows Kits\%KIT_WIN_VERSION%\bin\%KIT_WIN_NUM%\x86;C:\Program Files\Microsoft Visual Studio\%VS_VERSION%\Community\VC\Tools\MSVC\%VS_NUM%\bin\Hostx86\x86;;C:\GetGnuWin32\bin;%PATH%
 clang --version | grep "clang version"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 REM Options used with CLANG/LLVM compiler 32 bits (very similar with syntax of Visual C/C++ compiler) :
 REM 	/Wall								-> set all warning during compilation
 REM		/c 									-> compile and assemble only, not call of linker
@@ -767,7 +767,7 @@ set "PAR1=%~1"
 REM      Mandatory, add to PATH the binary directory of compiler CLANG 64 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=%LLVM64%\bin;C:\Program Files (X86)\Windows Kits\%KIT_WIN_VERSION%\bin\%KIT_WIN_NUM%\x64;C:\Program Files\Microsoft Visual Studio\%VS_VERSION%\Community\VC\Tools\MSVC\%VS_NUM%\bin\Hostx64\x64;;C:\GetGnuWin32\bin;%PATH
 clang --version | grep "clang version"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of Visual C/C++ compiler) :
 REM 	/Wall								-> set all warning during compilation
 REM		/c 									-> compile and assemble only, not call of linker
@@ -779,7 +779,7 @@ REM Options used with linker CLANG/LLVM 64 bits (very similar with syntax of Vis
 REM		/LD									-> generate a shared library => on Window, generate a DLL (Dynamic Linked Library)
 REM		/MT                     			-> Use static run-time  
 echo.  ***************          Edition de liens de la DLL avec CLANG 64 bits + VisualC/C++ + Kits Windows.     *******************
-clang-cl /LD /MT /Fedll_core64.dll --target x86_64-pc-windows-msvc dll_core64.obj 
+clang-cl /LD /MT /Fedll_core64.dll dll_core64.obj 
 echo.  ***************              Listage des fonctions exportees de la DLL                                   *******************
 REM  	dump result with command "dumpbin" to see exported symbols of dll
 dumpbin /exports  dll_core64.dll
@@ -1359,14 +1359,14 @@ OSArchitecture
   **********      Pour cette generation le premier parametre vaut "TWO" et le deuxieme "ALL".     *************
   ******************                        Compilation de la DLL en mode 32 bits                        *******************
 clang version 17.0.6
-src\dll_core.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file name on
-      disk [-Wnonportable-system-include-path]
+  ***************       Compilation de la DLL avec CLANG 32 bits + VisualC/C++ + Kits Windows.             *****************
+src\dll_core.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file name on disk
+      [-Wnonportable-system-include-path]
     3 | #include <windows.h>
       |          ^~~~~~~~~~~
       |          <Windows.h>
 In file included from src\dll_core.c:5:
-src/dll_share.h(56,18): warning: a function declaration without a prototype is deprecated in all versions of C
-      [-Wstrict-prototypes]
+src/dll_share.h(56,18): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
    56 | FUNCAPI int Hello();
       |                  ^
       |                   void
@@ -1383,23 +1383,22 @@ src\dll_core.c(25,1): note: declare 'static' if the function is not intended to 
    25 | BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
       | ^
       | static
-src\dll_core.c(61,18): warning: a function declaration without a prototype is deprecated in all versions of C
-      [-Wstrict-prototypes]
+src\dll_core.c(61,18): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
    61 | FUNCAPI int Hello()
       |                  ^
       |                   void
 src\dll_core.c(61,13): warning: no previous prototype for function 'Hello' [-Wmissing-prototypes]
    61 | FUNCAPI int Hello()
       |             ^
-src/dll_share.h(56,13): note: this declaration is not a prototype; add 'void' to make it a prototype for a
-      zero-parameter function
+src/dll_share.h(56,13): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
    56 | FUNCAPI int Hello();
       |             ^
       |                   void
 7 warnings generated.
+  ***************          Edition de liens de la DLL avec CLANG 32 bits + VisualC/C++ + Kits Windows.     *******************
    Création de la bibliothèque dll_core.lib et de l'objet dll_core.exp
-  ************                          Dump des symboles exportes de la DLL dll_core.dll                                     *************
-Microsoft (R) COFF/PE Dumper Version 14.38.33130.0
+  ***************              Listage des fonctions exportees de la DLL                                   *******************
+Microsoft (R) COFF/PE Dumper Version 14.38.33133.0
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 
@@ -1436,15 +1435,14 @@ File Type: DLL
         7000 .rdata
         1000 .reloc
        12000 .text
-  ************     Generation et lancement du premier programme de test de la DLL en mode implicite.      *************
-src\testdll_implicit.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file
-      name on disk [-Wnonportable-system-include-path]
+  *************     Generation et lancement du premier programme de test de la DLL en mode implicite.      *******************
+src\testdll_implicit.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file name on disk
+      [-Wnonportable-system-include-path]
     3 | #include <windows.h>
       |          ^~~~~~~~~~~
       |          <Windows.h>
 In file included from src\testdll_implicit.c:6:
-src/dll_share.h(56,18): warning: a function declaration without a prototype is deprecated in all versions of C
-      [-Wstrict-prototypes]
+src/dll_share.h(56,18): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
    56 | FUNCAPI int Hello();
       |                  ^
       |                   void
@@ -1467,39 +1465,38 @@ La multiplication de 16.9 par 7.3 vaut 123.37. (from application with implicit l
 La division de 16.9 par 7.3 vaut 2.315.        (from application with implicit load of DLL testdll_implicit.exe)
 Le carre de 7.3 par 7.3 vaut 53.29.            (from application with implicit load of DLL testdll_implicit.exe)
 DLL detaching from process...
-  ************     Generation et lancement du deuxieme programme de test de la DLL en mode explicite.     *************
-src\testdll_explicit.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file
-      name on disk [-Wnonportable-system-include-path]
+  ************      Generation et lancement du deuxieme programme de test de la DLL en mode explicite.      *****************
+src\testdll_explicit.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file name on disk
+      [-Wnonportable-system-include-path]
     3 | #include <windows.h>
       |          ^~~~~~~~~~~
       |          <Windows.h>
-src\testdll_explicit.c(8,25): warning: a function declaration without a prototype is deprecated in all versions of C
-      [-Wstrict-prototypes]
+src\testdll_explicit.c(8,25): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
     8 | typedef int (*HelloFunc)();
       |                         ^
       |                          void
-src\testdll_explicit.c(38,19): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'HelloFunc'
-      (aka 'int (*)()') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(38,19): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'HelloFunc' (aka 'int (*)()') converts
+      to incompatible function type [-Wcast-function-type-strict]
    38 |                 HelloFunc af0 = (HelloFunc)GetProcAddress(hLib, "Hello");
       |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(39,20): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'AddFuncint'
-      (aka 'int (*)(int, int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(39,20): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'AddFuncint' (aka 'int (*)(int, int)')
+      converts to incompatible function type [-Wcast-function-type-strict]
    39 |                 AddFuncint af1 = (AddFuncint)GetProcAddress(hLib, "Addint");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(40,20): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'SubFuncint'
-      (aka 'int (*)(int, int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(40,20): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'SubFuncint' (aka 'int (*)(int, int)')
+      converts to incompatible function type [-Wcast-function-type-strict]
    40 |                 SubFuncint af2 = (SubFuncint)GetProcAddress(hLib, "Subint");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(41,20): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'MulFuncint'
-      (aka 'int (*)(int, int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(41,20): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'MulFuncint' (aka 'int (*)(int, int)')
+      converts to incompatible function type [-Wcast-function-type-strict]
    41 |                 MulFuncint af3 = (MulFuncint)GetProcAddress(hLib, "Multint");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(42,20): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'DivFuncint'
-      (aka 'int (*)(int, int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(42,20): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'DivFuncint' (aka 'int (*)(int, int)')
+      converts to incompatible function type [-Wcast-function-type-strict]
    42 |                 DivFuncint af4 = (DivFuncint)GetProcAddress(hLib, "Divint");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(43,22): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'SquarFuncint'
-      (aka 'int (*)(int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(43,22): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'SquarFuncint' (aka 'int (*)(int)')
+      converts to incompatible function type [-Wcast-function-type-strict]
    43 |                 SquarFuncint af5 = (SquarFuncint)GetProcAddress(hLib, "Squarint");
       |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 src\testdll_explicit.c(44,20): warning: cast from 'FARPROC' (aka 'int (*)() __attribute__((stdcall))') to 'AddFuncdbl'
@@ -1560,14 +1557,14 @@ Le carre de 7.3 par 7.3 vaut 53.29.                   (from script python testdl
 DLL detaching from process...
   ******************             Compilation de la DLL en mode 64 bits               *******************
 clang version 17.0.6
-src\dll_core.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file name on
-      disk [-Wnonportable-system-include-path]
+  ***************       Compilation de la DLL avec CLANG 32 bits + VisualC/C++ + Kits Windows.             *****************
+src\dll_core.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file name on disk
+      [-Wnonportable-system-include-path]
     3 | #include <windows.h>
       |          ^~~~~~~~~~~
       |          <Windows.h>
 In file included from src\dll_core.c:5:
-src/dll_share.h(56,18): warning: a function declaration without a prototype is deprecated in all versions of C
-      [-Wstrict-prototypes]
+src/dll_share.h(56,18): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
    56 | FUNCAPI int Hello();
       |                  ^
       |                   void
@@ -1584,23 +1581,22 @@ src\dll_core.c(25,1): note: declare 'static' if the function is not intended to 
    25 | BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
       | ^
       | static
-src\dll_core.c(61,18): warning: a function declaration without a prototype is deprecated in all versions of C
-      [-Wstrict-prototypes]
+src\dll_core.c(61,18): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
    61 | FUNCAPI int Hello()
       |                  ^
       |                   void
 src\dll_core.c(61,13): warning: no previous prototype for function 'Hello' [-Wmissing-prototypes]
    61 | FUNCAPI int Hello()
       |             ^
-src/dll_share.h(56,13): note: this declaration is not a prototype; add 'void' to make it a prototype for a
-      zero-parameter function
+src/dll_share.h(56,13): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
    56 | FUNCAPI int Hello();
       |             ^
       |                   void
 7 warnings generated.
+  ***************          Edition de liens de la DLL avec CLANG 64 bits + VisualC/C++ + Kits Windows.     *******************
    Création de la bibliothèque dll_core64.lib et de l'objet dll_core64.exp
-  ************                          Dump des symboles exportes de la DLL dll_core64.dll                                   *************
-Microsoft (R) COFF/PE Dumper Version 14.38.33130.0
+  ***************              Listage des fonctions exportees de la DLL                                   *******************
+Microsoft (R) COFF/PE Dumper Version 14.38.33133.0
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 
@@ -1639,15 +1635,14 @@ File Type: DLL
         1000 .reloc
        15000 .text
         1000 _RDATA
-  ************     Generation et lancement du premier programme de test de la DLL en mode implicite.      *************
-src\testdll_implicit.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file
-      name on disk [-Wnonportable-system-include-path]
+  *************     Generation et lancement du premier programme de test de la DLL en mode implicite.      *******************
+src\testdll_implicit.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file name on disk
+      [-Wnonportable-system-include-path]
     3 | #include <windows.h>
       |          ^~~~~~~~~~~
       |          <Windows.h>
 In file included from src\testdll_implicit.c:6:
-src/dll_share.h(56,18): warning: a function declaration without a prototype is deprecated in all versions of C
-      [-Wstrict-prototypes]
+src/dll_share.h(56,18): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
    56 | FUNCAPI int Hello();
       |                  ^
       |                   void
@@ -1670,59 +1665,58 @@ La multiplication de 16.9 par 7.3 vaut 123.37. (from application with implicit l
 La division de 16.9 par 7.3 vaut 2.315.        (from application with implicit load of DLL testdll_implicit64.exe)
 Le carre de 7.3 par 7.3 vaut 53.29.            (from application with implicit load of DLL testdll_implicit64.exe)
 DLL detaching from process...
-  ************     Generation et lancement du deuxieme programme de test de la DLL en mode explicite.     *************
-src\testdll_explicit.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file
-      name on disk [-Wnonportable-system-include-path]
+  ************      Generation et lancement du deuxieme programme de test de la DLL en mode explicite.      *****************
+src\testdll_explicit.c(3,10): warning: non-portable path to file '<Windows.h>'; specified path differs in case from file name on disk
+      [-Wnonportable-system-include-path]
     3 | #include <windows.h>
       |          ^~~~~~~~~~~
       |          <Windows.h>
-src\testdll_explicit.c(8,25): warning: a function declaration without a prototype is deprecated in all versions of C
-      [-Wstrict-prototypes]
+src\testdll_explicit.c(8,25): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
     8 | typedef int (*HelloFunc)();
       |                         ^
       |                          void
-src\testdll_explicit.c(38,19): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'HelloFunc' (aka 'int (*)()')
-      converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(38,19): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'HelloFunc' (aka 'int (*)()') converts to incompatible
+      function type [-Wcast-function-type-strict]
    38 |                 HelloFunc af0 = (HelloFunc)GetProcAddress(hLib, "Hello");
       |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(39,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'AddFuncint'
-      (aka 'int (*)(int, int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(39,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'AddFuncint' (aka 'int (*)(int, int)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    39 |                 AddFuncint af1 = (AddFuncint)GetProcAddress(hLib, "Addint");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(40,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'SubFuncint'
-      (aka 'int (*)(int, int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(40,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'SubFuncint' (aka 'int (*)(int, int)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    40 |                 SubFuncint af2 = (SubFuncint)GetProcAddress(hLib, "Subint");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(41,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'MulFuncint'
-      (aka 'int (*)(int, int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(41,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'MulFuncint' (aka 'int (*)(int, int)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    41 |                 MulFuncint af3 = (MulFuncint)GetProcAddress(hLib, "Multint");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(42,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'DivFuncint'
-      (aka 'int (*)(int, int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(42,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'DivFuncint' (aka 'int (*)(int, int)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    42 |                 DivFuncint af4 = (DivFuncint)GetProcAddress(hLib, "Divint");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(43,22): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'SquarFuncint'
-      (aka 'int (*)(int)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(43,22): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'SquarFuncint' (aka 'int (*)(int)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    43 |                 SquarFuncint af5 = (SquarFuncint)GetProcAddress(hLib, "Squarint");
       |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(44,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'AddFuncdbl'
-      (aka 'double (*)(double, double)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(44,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'AddFuncdbl' (aka 'double (*)(double, double)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    44 |                 AddFuncdbl af6 = (AddFuncdbl)GetProcAddress(hLib, "Adddbl");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(45,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'SubFuncdbl'
-      (aka 'double (*)(double, double)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(45,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'SubFuncdbl' (aka 'double (*)(double, double)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    45 |                 SubFuncdbl af7 = (SubFuncdbl)GetProcAddress(hLib, "Subdbl");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(46,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'MulFuncdbl'
-      (aka 'double (*)(double, double)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(46,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'MulFuncdbl' (aka 'double (*)(double, double)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    46 |                 MulFuncdbl af8 = (MulFuncdbl)GetProcAddress(hLib, "Multdbl");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(47,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'DivFuncdbl'
-      (aka 'double (*)(double, double)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(47,20): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'DivFuncdbl' (aka 'double (*)(double, double)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    47 |                 DivFuncdbl af9 = (DivFuncdbl)GetProcAddress(hLib, "Divdbl");
       |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src\testdll_explicit.c(48,23): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'SquarFuncdbl'
-      (aka 'double (*)(double)') converts to incompatible function type [-Wcast-function-type-strict]
+src\testdll_explicit.c(48,23): warning: cast from 'FARPROC' (aka 'long long (*)()') to 'SquarFuncdbl' (aka 'double (*)(double)') converts to
+      incompatible function type [-Wcast-function-type-strict]
    48 |                 SquarFuncdbl af10 = (SquarFuncdbl)GetProcAddress(hLib, "Squardbl");
       |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 src\testdll_explicit.c(21,15): warning: unused parameter 'argc' [-Wunused-parameter]
@@ -1762,7 +1756,7 @@ La division de 16.9 par 7.3 vaut 2.31507.             (from script python testdl
 Le carre de 7.3 par 7.3 vaut 53.29.                   (from script python testdll_cdecl.py)
 DLL detaching from process...
         Fin de la generation de la DLL et des tests avec CLANG 32 bits ou 64 bits + Visual C/C++ + Kits Windows.
-
+		
 Avec ces très bons résultats attendus, je m'arrête ici pour ce bilan qui devait aller au bout des tests avec 
 des DLL générées par le compilateur CLANG version 17.0.6 adosssé aux environnements de développement Visual 
 C/C++ + Kits Windows, sur un environnement Windows 11 64 bits Family.
@@ -1787,5 +1781,5 @@ Voici les grandes lignes à retenir pour obtenir ce résultat :
 		
 A noter aussi que le compilateur CLANG génére automatiquement les librairies "ad hoc" (version 32 et 64 bits) lors de la 
 constitution des DLL, et ce sont ces librairies qui ont ensuite servies lors de la génération du programme de test avec
-chargement implicite de la DLL.
+chargement implicite de la DLL. Et c'est un comportement en adéquation avec le compilateur Visual C/C++ inclus dans VS2022.
 
